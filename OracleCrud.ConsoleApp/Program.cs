@@ -59,10 +59,16 @@ namespace OracleCrud.ConsoleApp
             //    conn.Open();
             //    using (var cmd = new OracleCommand(sqlRead, conn))
             //    {
-            //        OracleDataReader ordr = cmd.ExecuteReader(); //Read data
-            //        while (ordr.Read())
+            //        OracleDataReader odr = cmd.ExecuteReader(); //Read data
+            //        while (odr.Read())
             //        {
-            //            Console.WriteLine(ordr["ID"] + ",  " + ordr["FULLNAME"]);
+            //            var id = odr["ID"] == DBNull.Value ? string.Empty : odr["ID"];
+            //            var fullName = odr["FULLNAME"] == DBNull.Value ? string.Empty : odr["FULLNAME"];
+            //            var salary = odr["SALARY"] == DBNull.Value ? string.Empty : odr["SALARY"];
+            //            var dob = odr["DOB"] == DBNull.Value ? string.Empty : odr["DOB"];
+            //            var department = odr["DEPARTMENT"] == DBNull.Value ? string.Empty : odr["DEPARTMENT"];
+            //            var note = odr["NOTE"] == DBNull.Value ? string.Empty : odr["NOTE"];
+            //            Console.WriteLine($"{id}, {fullName}, {dob.ToString()}, {department}, {note}");
             //        }
             //        Console.ReadKey();
             //    }
@@ -79,14 +85,64 @@ namespace OracleCrud.ConsoleApp
             //    {
             //        string idParam = "DAT";
             //        cmd.Parameters.Add(":ID", idParam);
-            //        OracleDataReader ordr = cmd.ExecuteReader(); //Read data
-            //        while (ordr.Read())
+            //        OracleDataReader odr = cmd.ExecuteReader(); //Read data
+            //        while (odr.Read())
             //        {
-            //            Console.WriteLine(ordr["ID"] + ",  " + ordr["FULLNAME"]);
+            //            var id = odr["ID"] == DBNull.Value ? string.Empty : odr["ID"];
+            //            var fullName = odr["FULLNAME"] == DBNull.Value ? string.Empty : odr["FULLNAME"];
+            //            var salary = odr["SALARY"] == DBNull.Value ? string.Empty : odr["SALARY"];
+            //            var dob = odr["DOB"] == DBNull.Value ? string.Empty : odr["DOB"];
+            //            var department = odr["DEPARTMENT"] == DBNull.Value ? string.Empty : odr["DEPARTMENT"];
+            //            var note = odr["NOTE"] == DBNull.Value ? string.Empty : odr["NOTE"];
+            //            Console.WriteLine($"{id}, {fullName}, {dob.ToString()}, {department}, {note}");
             //        }
             //        Console.ReadKey();
             //    }
             //}
+
+            //(R)reate in CRUD (get with sort)
+            //TODO: LOC, DAT, DUC
+            //string sqlRead3 = "SELECT * FROM \"COOLIEDNIKKEMATEDB\".\"PERSON\" ORDER BY ID ";
+            //using (var conn = new OracleConnection(connString))
+            //{
+            //    conn.Open();
+            //    using (var cmd = new OracleCommand(sqlRead3, conn))
+            //    {
+            //        OracleDataReader odr = cmd.ExecuteReader(); //Read data
+            //        while (odr.Read())
+            //        {
+            //            var id = odr["ID"] == DBNull.Value ? string.Empty : odr["ID"];
+            //            var fullName = odr["FULLNAME"] == DBNull.Value ? string.Empty : odr["FULLNAME"];
+            //            var salary = odr["SALARY"] == DBNull.Value ? string.Empty : odr["SALARY"];
+            //            var dob = odr["DOB"] == DBNull.Value ? string.Empty : odr["DOB"];
+            //            var department = odr["DEPARTMENT"] == DBNull.Value ? string.Empty : odr["DEPARTMENT"];
+            //            var note = odr["NOTE"] == DBNull.Value ? string.Empty : odr["NOTE"];
+            //            Console.WriteLine($"{id}, {fullName}, {dob.ToString()}, {department}, {note}");
+            //        }
+            //        Console.ReadKey();
+            //    }
+            //}
+
+            //(R)reate in CRUD (get with group by)
+            //TODO: LOC, DAT, DUC
+            string sqlRead4 = "SELECT COUNT(ID), DEPARTMENT FROM \"COOLIEDNIKKEMATEDB\".\"PERSON\" GROUP BY DEPARTMENT ";
+            using (var conn = new OracleConnection(connString))
+            {
+                conn.Open();
+                using (var cmd = new OracleCommand(sqlRead4, conn))
+                {
+                    OracleDataReader odr = cmd.ExecuteReader(); //Read data
+                    while (odr.Read())
+                    {
+                       
+                        var department = odr["DEPARTMENT"] == DBNull.Value ? "NO DEPARTMENT" : odr["DEPARTMENT"];
+                        var numberOfperson = odr["COUNT(ID)"] == DBNull.Value ? string.Empty : odr["COUNT(ID)"];
+                        Console.WriteLine($"{department}, {numberOfperson}");
+                    }
+                    Console.ReadKey();
+                }
+            }
+
             //(U)reate in CRUD
             //TODO: LOC, DAT, DUC
             //string sqlUpdate = "UPDATE \"COOLIEDNIKKEMATEDB\".\"PERSON\" SET FULLNAME = :FULLNAME, DOB = :DOB WHERE ID = :ID ";
@@ -98,24 +154,24 @@ namespace OracleCrud.ConsoleApp
             //        string idParam = "DAT";
             //        string fullNameParam = "NGUYEN VAN C";
             //        cmd.Parameters.Add(":FULLNAME", fullNameParam);
-            //        cmd.Parameters.Add(":DOB", new DateTime(1998,5,3));
+            //        cmd.Parameters.Add(":DOB", new DateTime(1998, 5, 3));
             //        cmd.Parameters.Add(":ID", idParam);
             //        cmd.ExecuteNonQuery(); //Write data
             //    }
             //}
             //(D)reate in CRUD
             //TODO: LOC, DAT, DUC
-            string sqlDelete = "DELETE FROM COOLIEDNIKKEMATEDB.PERSON WHERE ID = :ID ";
-            using (var conn = new OracleConnection(connString))
-            {
-                conn.Open();
-                using (var cmd = new OracleCommand(sqlDelete, conn))
-                {
-                    string idParam = "DAT";
-                    cmd.Parameters.Add(":ID", idParam);
-                    cmd.ExecuteNonQuery(); //Write data
-                }
-            }
+            //string sqlDelete = "DELETE FROM COOLIEDNIKKEMATEDB.PERSON WHERE ID = :ID ";
+            //using (var conn = new OracleConnection(connString))
+            //{
+            //    conn.Open();
+            //    using (var cmd = new OracleCommand(sqlDelete, conn))
+            //    {
+            //        string idParam = "DAT";
+            //        cmd.Parameters.Add(":ID", idParam);
+            //        cmd.ExecuteNonQuery(); //Write data
+            //    }
+            //}
         }
     }
 }
